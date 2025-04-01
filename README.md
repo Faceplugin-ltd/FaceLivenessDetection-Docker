@@ -38,18 +38,17 @@ Here's the useful documentation.
 <a name="get-machine-code"></a>
 #### Get Machine Code
 <div align="left">
-<img src="https://github.com/Faceplugin-ltd/FaceLivenessDetection-Docker/assets/160750757/06cd2f3b-8d9d-4a35-bd01-e74a29ac24e9.png" alt="Awesome Badge"/>
+<img src="https://github.com/user-attachments/assets/4915258c-badf-47ab-9438-22e523bb6594" alt="Get Machine Code"/>
 </div>
 <h4>Please share the machine code with us so that we can give you license.</h4>
 
 #### Activate Machine
 <div align="left">
-<img src="https://github.com/Faceplugin-ltd/FaceLivenessDetection-Docker/assets/160750757/43c80f9f-e68c-4a52-bda3-1d42d70f4f4b.png" alt="Awesome Badge"/>
+<img src="https://github.com/user-attachments/assets/b588384d-468e-44cb-9e7f-34dd38156ef4" alt="Activate Machine"/>
 </div>
 
 #### Liveness Detection using raw file
-<div align="left">
-<img src="https://github.com/Faceplugin-ltd/FaceLivenessDetection-Docker/assets/160750757/77f964f4-a0ed-41c3-878e-d7a039f0e3d2.png" alt="Awesome Badge"/>
+<img src="https://github.com/user-attachments/assets/d4b8f7c0-caff-455e-85d4-3a6029ef7685" alt="Liveness Detection"/>
 </div>
 
 ## Run Demo
@@ -61,14 +60,14 @@ http://127.0.0.1:8888 or http://0.0.0.0:8888
 
 * **[FaceRecognition-LivenessDetection-Android](https://github.com/Faceplugin-ltd/FaceRecognition-Android)**
 * **[FaceRecognition-LivenessDetection-iOS](https://github.com/Faceplugin-ltd/FaceRecognition-iOS)**
-* **[FaceRecognition-LivenessDetection-Javascript](https://github.com/Faceplugin-ltd/FaceRecognition-LivenessDetection-Javascript)**
-* **[FaceLivenessDetection-Android](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Android)**
-* **[FaceLivenessDetection-iOS](https://github.com/Faceplugin-ltd/FaceLivenessDetection-iOS)**
+* **[FaceRecognition-LivenessDetection-React Native](https://github.com/Faceplugin-ltd/FaceRecognition-React-Native#)**
+* **[FaceRecognition-LivenessDetection-Flutter](https://github.com/Faceplugin-ltd/FaceRecognition-Flutter)**
+* **[FaceRecognition-LivenessDetection-.Net WPF](https://github.com/Faceplugin-ltd/FaceRecognition-WPF-.Net)**
+* **[FaceRecognition-LivenessDetection-.Net MAUI](https://github.com/Faceplugin-ltd/FaceRecognition-.Net)**
 * **[FaceLivenessDetection-Linux](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Linux)**
+* **[FaceRecognition-LivenessDetection-Javascript](https://github.com/Faceplugin-ltd/FaceRecognition-LivenessDetection-Javascript)**
 * **[FaceRecognition-LivenessDetection-React](https://github.com/Faceplugin-ltd/FaceRecognition-LivenessDetection-React)**
 * **[FaceRecognition-LivenessDetection-Vue](https://github.com/Faceplugin-ltd/FaceRecognition-LivenessDetection-Vue)**
-* **[Face Recognition SDK](https://github.com/Faceplugin-ltd/Face-Recognition-SDK)**
-* **[Liveness Detection SDK](https://github.com/Faceplugin-ltd/Face-Liveness-Detection-SDK)**
 * **[ID Card Recognition](https://github.com/Faceplugin-ltd/ID-Card-Recognition)**
 
 ## Contact
