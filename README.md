@@ -31,30 +31,17 @@ sudo docker build -t face-liveness --progress=plain .
 sudo docker run --name faceplugin -d -p 0.0.0.0:8888:8888 face-liveness
 ```
 
-## Documentation
-
-Here's the useful documentation.
-
-<a name="get-machine-code"></a>
+## How to run
 #### Get Machine Code
-<div align="left">
-<img src="https://github.com/user-attachments/assets/4915258c-badf-47ab-9438-22e523bb6594" alt="Get Machine Code"/>
-</div>
-<h4>Please share the machine code with us so that we can give you license.</h4>
+![Get Machine Code](https://github.com/user-attachments/assets/4915258c-badf-47ab-9438-22e523bb6594)
+
+Please [contact us](#contact) to get the license.
 
 #### Activate Machine
-<div align="left">
-<img src="https://github.com/user-attachments/assets/b588384d-468e-44cb-9e7f-34dd38156ef4" alt="Activate Machine"/>
-</div>
+![Activate Machine](https://github.com/user-attachments/assets/b588384d-468e-44cb-9e7f-34dd38156ef4)
 
 #### Liveness Detection using raw file
-<img src="https://github.com/user-attachments/assets/d4b8f7c0-caff-455e-85d4-3a6029ef7685" alt="Liveness Detection"/>
-</div>
-
-## Run Demo
-Please use following url or your public ip address via internet
-
-http://127.0.0.1:8888 or http://0.0.0.0:8888
+![Liveness Detection using raw file](https://github.com/user-attachments/assets/d4b8f7c0-caff-455e-85d4-3a6029ef7685)
 
 ## List of our Products
 * **[Face Recognition with Liveness Detection-Android (Java, Kotlin)](https://github.com/Faceplugin-ltd/FaceRecognition-Android)**
