@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "faceplugin-faceliveness-0001",
+    "name": "FacePlugin FaceLiveness",
+    "description": "FacePlugin Face Liveness API.\n\nbaseUrl defaults to host port 8084.\nPOST /api/liveness with { \"image\": \"<base64>\" }.\nResponse data: { \"score\": <float>, \"result\": \"Real\" | \"Spoof\", \"pass\": <bool> }.\nScore \u2265 0.5 is Real (pass true). Below 0.5 is Spoof (pass false).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8084"
+    },
+    {
+      "key": "imageB64",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Shared",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/health"
+          }
+        },
+        {
+          "name": "Version",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/backend"
+          }
+        },
+        {
+          "name": "Machine code",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/machinecode"
+          }
+        },
+        {
+          "name": "License status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/licenseStatus"
+          }
+        },
+        {
+          "name": "Activate (FP1. text)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "FP1.PASTE_YOUR_LICENSE_KEY_HERE"
+            },
+            "url": "{{baseUrl}}/api/activate"
+          }
+        },
+        {
+          "name": "Activate (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "license",
+                  "type": "text",
+                  "value": "FP1.PASTE_YOUR_LICENSE_KEY_HERE"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/activate",
+            "description": "form-data license text, or a file part named license."
+          }
+        }
+      ]
+    },
+    {
+      "name": "FaceLiveness",
+      "item": [
+        {
+          "name": "Liveness (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"{{imageB64}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/liveness"
+          }
+        },
+        {
+          "name": "Liveness (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/path/to/image.jpg"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/liveness",
+            "description": "multipart/form-data file upload; same path as JSON."
+          }
+        }
+      ]
+    }
+  ]
+}
