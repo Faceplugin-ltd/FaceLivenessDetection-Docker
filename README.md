@@ -9,17 +9,21 @@
 
 # FacePlugin Face Liveness SDK — Linux / Docker (Fully On-Premise)
 
-> **Ready in minutes:** `docker pull` → copy machine code from logs → `curl /api/health`.  
+> **Fastest:** `docker pull faceplugin/face-liveness:latest` → run → copy machine code → activate.  
+> **Local Linux:** put runtime under `lib/cpu/` → `./run.sh` → activate.  
+> **Docker Hub:** no Drive download. **Local:** Google Drive → `lib/cpu/` — see Option B.  
 > Jump: [Quick Start](#quick-start) · [Start the API](#start-the-api) · [SDK License](#sdk-license) · [Setup on your own app](#setup-on-your-own-app) · [Try it](#try-it)
 
 ## Quick Start
 
-- [ ] Download and run the appropriate Docker image from [FacePlugin Docker Hub](https://hub.docker.com/r/faceplugin/face-liveness). [See Option A for details](#option-a--docker-hub-no-drive-download).
+- [ ] **Docker (recommended):** `docker pull faceplugin/face-liveness:latest` then `docker run` — [Option A](#option-a--docker-hub-no-drive-download)
+- [ ] **Or local:** download CPU runtime into `lib/cpu/` — [Option B](#option-b--local-linux-runsh), then `./run.sh` — API on **8084**
 - [ ] **Confirm it is running:** `curl -s http://127.0.0.1:8084/api/health` (no license needed yet)
 - [ ] [Contact us](#contact) with your machine code to obtain a license key, then activate with `POST /api/activate` — [SDK License](#sdk-license)
-- [ ] **Try it:** Postman, curl, or local Gradio demo on **9004** (`demo.py`)
+- [ ] **Try it:** Postman, curl, or local Gradio demo
 
 Docs: [https://doc.faceplugin.com](https://doc.faceplugin.com)
+
 
 ## Introduction
 
@@ -70,7 +74,7 @@ Score **≥ 0.5** → `result: "Real"`, `pass: true`. Score **< 0.5** → `resul
 | Step | What you need |
 | ---- | ------------- |
 | 1 | A Linux host **or** Docker |
-| 2 | Docker Hub pull does **not** need Drive — [see Option A](#option-a--docker-hub-no-drive-download) |
+| 2 | Docker Hub **or** Google Drive runtime in `./lib/cpu/` — see [Start the API](#start-the-api) |
 | 3 | Start **without** a license. Copy machine code from logs or `GET /api/machinecode`, send it to FacePlugin ([contact](#contact)), then activate with your license key |
 
 ### System requirements
@@ -94,6 +98,8 @@ The API starts even if activation fails. Copy the **machine code** from the log 
 
 ### Option A — Docker Hub (no Drive download)
 
+Runtime is already inside the image. No Google Drive step.
+
 ```bash
 sudo docker pull faceplugin/face-liveness:latest
 sudo docker run -d --name faceplugin-face-liveness \
@@ -105,30 +111,70 @@ sudo docker logs -f faceplugin-face-liveness
 # Look for the machine code line in the logs
 ```
 
-### Several containers, one license
+On Docker Desktop (macOS/Windows) omit the `/etc/machine-id` volume.
 
-On **Linux**, add `-v /etc/machine-id:/etc/machine-id:ro` to the `docker run` above so the machine code stays on that host. Then start another container with a **new name and host port** — same image, same license key:
+### Run multiple containers
+
+To run multiple containers on one Linux host with a shared machine code / license, see the docs:
+
+[https://doc.faceplugin.com/liveness-detection-sdk/server-sdk/liveness-detection-linux-sdk#run-multiple-containers](https://doc.faceplugin.com/liveness-detection-sdk/server-sdk/liveness-detection-linux-sdk#run-multiple-containers)
+
+### Option B — Local Linux (`./run.sh`)
+
+Requires the Google Drive runtime under `lib/cpu/`. Needs glibc **2.38+** (for example Ubuntu 24.04).
+
+#### Get the runtime
+
+The `./lib/cpu/` tree is empty on GitHub because native binaries and model files are too large. This product is **CPU-only**.
+
+**[FaceLiveness Linux runtime (Google Drive)](https://drive.google.com/drive/folders/1rFnw7VASLmA4q8NWenQgszFS8njRGEgt)**
+
+1. Clone the repo (if you have not already):
 
 ```bash
-sudo docker run -d --name faceplugin-face-liveness-2 \
-  -p 8085:8084 \
-  -v /etc/machine-id:/etc/machine-id:ro \
-  faceplugin/face-liveness:latest
+git clone https://github.com/Faceplugin-ltd/FaceLivenessDetection-Docker.git
+cd FaceLivenessDetection-Docker
 ```
 
-Activate on each host port with the same key. On **Docker Desktop** (macOS/Windows) skip the `machine-id` volume; each container may need its own license.
+2. Open the Google Drive folder above.
+3. Download **all files** in that folder.
+4. Put every file **directly** into `./lib/cpu/` — not inside a nested subfolder.
 
+```text
+FaceLivenessDetection-Docker/
+└── lib/
+    └── cpu/
+        ├── libFaceLivenessSDK.so
+        ├── libfal-eng.so
+        ├── fal.fpk
+        └── ... (other runtimes from Drive)
+```
 
-### Need Docker Compose or a native install?
+Wrong layout: `lib/cpu/SomeFolder/libFaceLivenessSDK.so`.
 
-The steps above (Docker Hub) are enough for most teams. If you need **Docker Compose** with a local build, or a **native Linux** install without Docker Hub, [contact FacePlugin](#contact) and we will share the Drive runtime package and setup for your environment.
+```bash
+ls lib/cpu/libFaceLivenessSDK.so
+ls lib/cpu/libfal-eng.so
+ls lib/cpu/fal.fpk
+```
+
+#### Run
+
+```bash
+pip3 install -r requirements.txt
+./run.sh
+```
+
+API: **http://127.0.0.1:8084**
+
+Copy the **machine code** from the terminal (or `GET /api/machinecode`), then activate with `POST /api/activate` or paste the license key when prompted.
 
 
 ## SDK License
 
 Licenses are **offline** and **bound to a machine code**. Offline cryptography is built into the SDK — no OpenSSL install.
 
-1. Start the server (above). A license is not required for the first start.
+1. Start the server ([above](#start-the-api)) with Docker Hub or local `./run.sh`. A license is not required for the first start.
 2. Copy the machine code from the log (machine code).
 3. Send that code to FacePlugin ([contact](#contact)). We issue a license key for that code.
 4. Activate with the license key:
