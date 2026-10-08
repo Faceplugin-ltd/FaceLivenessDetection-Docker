@@ -21,7 +21,7 @@
 - **Try it:** Postman, curl, or local Gradio demo on **9004** (`python3 demo.py`)
 
 Docs: [doc.faceplugin.com](https://doc.faceplugin.com)\
-Try online: [Hugging Face Space](https://huggingface.co/spaces/FacePlugin-Ltd/Liveness-Detection-SDK)
+Try online: [Hugging Face Space](https://huggingface.co/spaces/FacePlugin-Ltd/FaceRecognition-LivenessDetection-SDK)
 
 ## Introduction
 
