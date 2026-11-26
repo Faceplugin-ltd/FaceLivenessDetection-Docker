@@ -1,0 +1,21 @@
+2026-11-25 04:17:47 [220903] Failed to initialize fridge at directory '' (syserr 2/No such file or directory)
+2026-11-25 04:17:47 [220903] Disabling fingerprint due disabled storage
+2026-11-25 04:17:47 [220903] Error probing server '255.255.255.255:1947' (in connect udp) after 0 [ms] (syserr 13/Permission denied)
+2026-11-25 04:18:44 [221322] Failed to initialize fridge at directory '' (syserr 2/No such file or directory)
+2026-11-25 04:18:44 [221322] Disabling fingerprint due disabled storage
+2026-11-25 04:18:44 [221322] Error probing server '255.255.255.255:1947' (in connect udp) after 0 [ms] (syserr 13/Permission denied)
+2026-11-25 04:29:47 [227922] Failed to initialize fridge at directory '' (syserr 2/No such file or directory)
+2026-11-25 04:29:47 [227922] Disabling fingerprint due disabled storage
+2026-11-25 04:29:47 [227922] Error probing server '255.255.255.255:1947' (in connect udp) after 0 [ms] (syserr 13/Permission denied)
+2026-11-25 04:33:01 [229240] Failed to initialize fridge at directory '' (syserr 2/No such file or directory)
+2026-11-25 04:33:01 [229240] Disabling fingerprint due disabled storage
+2026-11-25 04:33:01 [229240] Error probing server '255.255.255.255:1947' (in connect udp) after 1 [ms] (syserr 13/Permission denied)
+2026-11-25 04:37:48 [231052] Failed to initialize fridge at directory '' (syserr 2/No such file or directory)
+2026-11-25 04:37:48 [231052] Disabling fingerprint due disabled storage
+2026-11-25 04:37:48 [231052] Error probing server '255.255.255.255:1947' (in connect udp) after 0 [ms] (syserr 13/Permission denied)
+2026-11-25 04:47:08 [234334] Failed to initialize fridge at directory '' (syserr 2/No such file or directory)
+2026-11-25 04:47:08 [234334] Disabling fingerprint due disabled storage
+2026-11-25 04:47:08 [234334] Error probing server '255.255.255.255:1947' (in connect udp) after 0 [ms] (syserr 13/Permission denied)
+2026-11-25 04:48:31 [234780] Failed to initialize fridge at directory '' (syserr 2/No such file or directory)
+2026-11-25 04:48:31 [234780] Disabling fingerprint due disabled storage
+2026-11-25 04:48:31 [234780] Error probing server '255.255.255.255:1947' (in connect udp) after 0 [ms] (syserr 13/Permission denied)

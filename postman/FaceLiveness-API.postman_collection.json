@@ -1,0 +1,160 @@
+{
+  "info": {
+    "_postman_id": "faceplugin-faceliveness-0001",
+    "name": "FaceLivenessSDK API",
+    "description": "FacePlugin FaceLivenessSDK API (Normal liveness).\nbaseUrl defaults to port 8093.\nPOST /api/liveness \u2192 {success,code,message,data:{score,result,pass}}.\nSame schema as Face-Recognition-LivenessDetection-Windows liveness routes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8093"
+    },
+    {
+      "key": "imageB64",
+      "value": ""
+    },
+    {
+      "key": "image2B64",
+      "value": ""
+    },
+    {
+      "key": "feature1",
+      "value": ""
+    },
+    {
+      "key": "feature2",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Shared",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/health"
+          }
+        },
+        {
+          "name": "Version",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/backend"
+          }
+        },
+        {
+          "name": "Machine code",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/machinecode"
+          }
+        },
+        {
+          "name": "License status",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/licenseStatus"
+          }
+        },
+        {
+          "name": "Activate (FP1. text)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "FP1.PASTE_YOUR_LICENSE_KEY_HERE"
+            },
+            "url": "{{baseUrl}}/api/activate",
+            "description": "Preferred: paste the FP1. key from FacePlugin (same content as license.txt)."
+          }
+        },
+        {
+          "name": "Activate (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"license\": \"FP1.PASTE_YOUR_LICENSE_KEY_HERE\"\n}"
+            },
+            "url": "{{baseUrl}}/api/activate"
+          }
+        },
+        {
+          "name": "Activate (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "license",
+                  "type": "text",
+                  "value": "FP1.PASTE_YOUR_LICENSE_KEY_HERE"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/activate",
+            "description": "form-data license text, or a file part named license."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Liveness",
+      "item": [
+        {
+          "name": "Liveness (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"{{imageB64}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/liveness"
+          }
+        },
+        {
+          "name": "Liveness (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/path/to/image.jpg"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/liveness",
+            "description": "multipart/form-data file upload; same path as JSON."
+          }
+        }
+      ]
+    }
+  ]
+}
