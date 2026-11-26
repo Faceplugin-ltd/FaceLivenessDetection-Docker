@@ -27,7 +27,7 @@ FacePlugin **Face Liveness Detection** is a fully on-premise anti-spoofing engin
 
 It detects printed photos, screen replays (photo and video), 3D masks, and deepfakes handled as one more kind of spoof.
 
-The SDK runs as a REST API server through **Docker** (Linux, Windows, and macOS — Apple Silicon uses amd64 emulation), or natively on **Linux x86_64**. It runs on CPU only. This repository is self-contained; no other FacePlugin repository is required.
+The SDK runs as a REST API server through **Docker on a Linux host**, or natively on **Linux x86_64**. It runs on CPU only. The container is started privileged, with 2 GB of shared memory and the host's `/etc/machine-id` bound in — see [Option A — Docker](#option-a--docker) — so Docker Desktop on macOS or Windows is not a supported host; use a Linux VM there. This repository is self-contained; no other FacePlugin repository is required.
 
 All processing stays on your server. **No** biometric data is sent to FacePlugin — built for banking, eKYC, and on-premise compliance workflows.
 
@@ -43,7 +43,11 @@ All processing stays on your server. **No** biometric data is sent to FacePlugin
 
 Score **≥ 0.5** → `result: "Real"`, `pass: true`. Score **< 0.5** → `result: "Spoof"`, `pass: false`.
 
-`POST /api/check_liveness` is an alias of `/api/liveness`. Routes are `/api/*`; there is no version segment.
+`POST /api/check_liveness` is an alias of `/api/liveness`. Routes are `/api/*`; there is no version segment, and every `/api/*` path answers `OPTIONS` for browser preflight.
+
+The call takes one image and nothing else — there is **no model or algorithm to choose**. The runtime fuses every RGB estimator it holds into the single score you get back, and `pass` is `score >= 0.5`, fixed in native code and not settable over HTTP.
+
+Liveness here is **passive only**. There is no active (challenge–response) liveness over HTTP; for that, use the mobile SDKs in [Product List](#product-list).
 
 ### Benchmarks
 
@@ -62,19 +66,28 @@ Figures: [doc.faceplugin.com](https://doc.faceplugin.com/products/face-recogniti
 
 ### Product List
 
-| Product | Repository |
-| ------- | ---------- |
-| **Face Liveness Detection — Docker** | **[Docker Hub](https://hub.docker.com/r/faceplugin/face-liveness)** · **[FaceLivenessDetection-Docker](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Docker)** **(this repo)** |
-| Face Liveness Detection — Windows | [FaceLivenessDetection-Windows](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Windows) |
-| Face Recognition — Docker | [Docker Hub](https://hub.docker.com/r/faceplugin/face-recognition) · [FaceRecognition-Docker](https://github.com/Faceplugin-ltd/FaceRecognition-Docker) |
-| Face Recognition — Windows | [FaceRecognition-Windows](https://github.com/Faceplugin-ltd/FaceRecognition-Windows) |
+The same Face Liveness product ships on nine platforms. The mobile SDKs run on-device and offer **passive and active** liveness; the two server products are **passive only**.
+
+| Platform | Repository |
+| -------- | ---------- |
+| Android | [FaceLivenessDetection-Android](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Android) |
+| iOS | [FaceLivenessDetection-iOS](https://github.com/Faceplugin-ltd/FaceLivenessDetection-iOS) |
+| Flutter | [FaceLivenessDetection-Flutter](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Flutter) |
+| React Native | [FaceLivenessDetection-ReactNative](https://github.com/Faceplugin-ltd/FaceLivenessDetection-ReactNative) |
+| Ionic Capacitor | [FaceLivenessDetection-Ionic-Capacitor](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Ionic-Capacitor) |
+| Ionic Cordova | [FaceLivenessDetection-Ionic-Cordova](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Ionic-Cordova) |
+| .NET MAUI | [FaceLivenessDetection-DotNet-MAUI](https://github.com/Faceplugin-ltd/FaceLivenessDetection-DotNet-MAUI) |
+| Windows (server) | [FaceLivenessDetection-Windows](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Windows) |
+| **Linux / Docker** (server) | **[Docker Hub](https://hub.docker.com/r/faceplugin/face-liveness)** · **[FaceLivenessDetection-Docker](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Docker)** **(this repo)** |
 
 ### Related products
 
-On-device liveness apps for mobile:
+Need **active liveness** — blink, smile, turn your head? That is an on-device feature; start with the mobile SDKs above, for example [FaceLivenessDetection-Android](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Android) or [FaceLivenessDetection-iOS](https://github.com/Faceplugin-ltd/FaceLivenessDetection-iOS).
 
-- **Android** — [FaceLivenessDetection-Android](https://github.com/Faceplugin-ltd/FaceLivenessDetection-Android)
-- **iOS** — [FaceLivenessDetection-iOS](https://github.com/Faceplugin-ltd/FaceLivenessDetection-iOS)
+Face recognition, on-premise servers:
+
+- **Docker** — [Docker Hub](https://hub.docker.com/r/faceplugin/face-recognition) · [FaceRecognition-Docker](https://github.com/Faceplugin-ltd/FaceRecognition-Docker)
+- **Windows** — [FaceRecognition-Windows](https://github.com/Faceplugin-ltd/FaceRecognition-Windows)
 
 On-device face recognition + liveness apps for mobile:
 
@@ -85,7 +98,7 @@ On-device face recognition + liveness apps for mobile:
 
 | Step | What you need |
 | ---- | ------------- |
-| 1 | Docker Engine, **or** Linux x86_64 with glibc 2.38+ and Python 3.10+ |
+| 1 | Docker Engine **on a Linux host**, **or** Linux x86_64 with glibc 2.38+ and Python 3.10+ |
 | 2 | For a native run only: the runtime in `lib/cpu/` — see [Get the runtime](#get-the-runtime). The Docker image already contains it. |
 | 3 | Start **without** a license, copy the machine code from the logs, send it to FacePlugin ([contact](#contact)), then activate with your license key |
 
@@ -161,7 +174,15 @@ sudo docker logs -f faceplugin-face-liveness
 # Look for the machine code line in the logs
 ```
 
-On Docker Desktop (macOS/Windows) omit the `/etc/machine-id` volume — there is no host `/etc/machine-id` to mount, and the machine code then changes with the container.
+**All three flags are mandatory.** `run.sh` checks them inside the container before it starts anything, and exits with an error if any is missing:
+
+| Flag | What is checked |
+| ---- | --------------- |
+| `-v /etc/machine-id:/etc/machine-id:ro` | `/etc/machine-id` must be a mountpoint — otherwise the license binds to the container's own id, not the host's |
+| `--shm-size=2gb` | `/dev/shm` must be at least ~1.9 GB |
+| `--privileged` | `CAP_SYS_ADMIN` must be set in the container's effective capabilities |
+
+So the image expects a **Linux host** — or a Linux VM — that can supply a real `/etc/machine-id`. On Docker Desktop for macOS or Windows there is no host `/etc/machine-id` to bind, and dropping the mount does not help: the container then fails the check and stops. Run it on a Linux host, or inside a Linux VM you control.
 
 The repository also ships a [`docker-compose.yml`](docker-compose.yml) and a [`Dockerfile`](Dockerfile) if you prefer Compose or your own build. A local build needs `lib/cpu/` filled first — see [Get the runtime](#get-the-runtime).
 
@@ -203,7 +224,7 @@ Or mount it into the container, as [`docker-compose.yml`](docker-compose.yml) do
  <img src="https://raw.githubusercontent.com/Faceplugin-ltd/faceplugin-assets/main/screenshots/face-liveness/desktop/activate.png" alt="POST /api/activate returning activated: true with the machine code" width="900"/>
 </p>
 
-On a Linux host the machine code comes from `/etc/machine-id`, so mount it read-only to keep the code stable across container restarts. Without that mount the code follows the container, and your license stops matching after a recreate.
+The machine code comes from `/etc/machine-id`, which is why the host's file must be bound in read-only. Without that mount the code would follow the container and your license would stop matching after a recreate — so `run.sh` refuses to start at all. See [Option A — Docker](#option-a--docker).
 
 ### License capabilities
 
@@ -229,12 +250,15 @@ curl -s http://127.0.0.1:8093/api/health
 curl -s -X POST http://127.0.0.1:8093/api/liveness \
   -H "Content-Type: application/json" \
   -d '{"image":"<base64-jpeg>"}'
+
+# or multipart, with the file in the `image` field (`file` is accepted too)
+curl -s -X POST http://127.0.0.1:8093/api/liveness -F "image=@face.jpg"
 ```
 
-Success `data`:
+The native JSON is passed through verbatim:
 
 ```json
-{ "score": 0.72, "result": "Real", "pass": true }
+{ "success": true, "code": 0, "message": "OK", "data": { "score": 0.72, "result": "Real", "pass": true } }
 ```
 
 Common failures (`success: false`, `data: null`):
