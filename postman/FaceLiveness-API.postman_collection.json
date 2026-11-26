@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "faceplugin-faceliveness-0001",
     "name": "FaceLivenessSDK API",
-    "description": "FacePlugin FaceLivenessSDK API (Normal liveness).\nbaseUrl defaults to port 8093.\nPOST /api/liveness \u2192 {success,code,message,data:{score,result,pass}}.\nSame schema as Face-Recognition-LivenessDetection-Windows liveness routes.",
+    "description": "FacePlugin Face Liveness Detection API (Windows / Docker).\nbaseUrl defaults to port 8093.\nPOST /api/liveness (alias /api/check_liveness) → {success,code,message,data:{score,result,pass}}.\nFailures include NO_FACE and Image not suitable (data is null).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -12,18 +12,6 @@
     },
     {
       "key": "imageB64",
-      "value": ""
-    },
-    {
-      "key": "image2B64",
-      "value": ""
-    },
-    {
-      "key": "feature1",
-      "value": ""
-    },
-    {
-      "key": "feature2",
       "value": ""
     }
   ],
@@ -39,10 +27,11 @@
           }
         },
         {
-          "name": "Version",
+          "name": "Backend",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/backend"
+            "url": "{{baseUrl}}/api/backend",
+            "description": "Which runtime is loaded (product, backend, lib_dir)."
           }
         },
         {
@@ -132,7 +121,8 @@
               "mode": "raw",
               "raw": "{\n  \"image\": \"{{imageB64}}\"\n}"
             },
-            "url": "{{baseUrl}}/api/liveness"
+            "url": "{{baseUrl}}/api/liveness",
+            "description": "Success data: {score, result, pass}. Score ≥ 0.5 → Real / pass true.\nFailures (data null): NO_FACE, Image not suitable."
           }
         },
         {
@@ -152,6 +142,24 @@
             },
             "url": "{{baseUrl}}/api/liveness",
             "description": "multipart/form-data file upload; same path as JSON."
+          }
+        },
+        {
+          "name": "Check liveness (alias)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"{{imageB64}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/check_liveness",
+            "description": "Alias of POST /api/liveness."
           }
         }
       ]

@@ -237,6 +237,13 @@ Success `data`:
 { "score": 0.72, "result": "Real", "pass": true }
 ```
 
+Common failures (`success: false`, `data: null`):
+
+| `message` | Meaning |
+| --------- | ------- |
+| `NO_FACE` | No usable face in the image |
+| `Image not suitable` | Missing or undecodable image |
+
 Full protocol: [https://doc.faceplugin.com](https://doc.faceplugin.com).
 
 ### Security
@@ -254,9 +261,9 @@ Put it behind your own gateway, or publish the port only to a private network, b
 
 ### Postman
 
-Import [`postman/FaceLiveness-API.postman_collection.json`](postman/FaceLiveness-API.postman_collection.json).
+Import [`postman/FaceLiveness-API.postman_collection.json`](postman/FaceLiveness-API.postman_collection.json). See [`postman/README.md`](postman/README.md) for the flow and failure messages.
 
-Default base URL: `http://127.0.0.1:8093`. Routes are `/api/*`.
+Default base URL: `http://127.0.0.1:8093`. Routes are `/api/*` (`/api/check_liveness` aliases `/api/liveness`).
 
 ### Demo UI (Gradio) — local only
 
