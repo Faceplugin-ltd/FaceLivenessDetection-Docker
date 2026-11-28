@@ -15,7 +15,6 @@ LICENSE
 license.txt
 license.txt.example
 license.dat
-build_docker.sh
 docker-compose*.yml
 # Local demo UI only — not part of the SDK/API image
 demo.py

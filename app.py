@@ -43,6 +43,29 @@ def sdk_json(result):
     return Response(raw, mimetype="application/json")
 
 
+def activate_checked(license_path: str) -> int:
+    """Activate and require the liveness feature bit (rejects wrong-tier keys)."""
+    res = sdk.activate(license_path)
+    if res != 0:
+        return res
+    if not sdk.get_license_status().get("liveness"):
+        return -1
+    return 0
+
+
+def require_liveness():
+    """Block inference when the loaded license lacks liveness."""
+    status = sdk.get_license_status()
+    if status.get("liveness"):
+        return None
+    return envelope(
+        False,
+        -1,
+        "Invalid license",
+        {"activated": bool(status.get("licensed")), "license": status},
+    )
+
+
 @app.after_request
 def cors(resp):
     resp.headers["Access-Control-Allow-Origin"] = "*"
@@ -93,13 +116,23 @@ def activate():
     if not raw:
         return envelope(False, -1, "Empty license", None)
     path = license_ux.save_license(ROOT, raw)
-    res = sdk.activate(str(path))
+    res = activate_checked(str(path))
     mc = sdk.get_machine_code()
+    status = sdk.get_license_status()
     if res != 0:
         return envelope(
-            False, -1, "Invalid license", {"activated": False, "machinecode": mc}
+            False,
+            -1,
+            "Invalid license",
+            {"activated": False, "machinecode": mc, "license": status},
         )
-    sdk.init_sdk()
+    if sdk.init_sdk() != 0:
+        return envelope(
+            False,
+            -1,
+            "Invalid license",
+            {"activated": False, "machinecode": mc, "license": status},
+        )
     return envelope(
         True, 0, "Successfully activated", {"activated": True, "machinecode": mc}
     )
@@ -108,6 +141,9 @@ def activate():
 @app.post("/api/liveness")
 @app.post("/api/check_liveness")
 def liveness():
+    blocked = require_liveness()
+    if blocked is not None:
+        return blocked
     data = http_body.parse_body()
     image = data.get("image")
     if not image:
@@ -136,7 +172,7 @@ def main() -> None:
     license_ux.bootstrap(
         ROOT,
         get_machine_code=sdk.get_machine_code,
-        activate=sdk.activate,
+        activate=activate_checked,
         init_sdk=sdk.init_sdk,
     )
     port = int(os.environ.get("PORT", os.environ.get("FACESDK_PORT", "8093")))

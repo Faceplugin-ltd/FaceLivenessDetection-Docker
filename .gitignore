@@ -4,7 +4,7 @@ __pycache__/
 *.pyo
 .DS_Store
 
-# Runtime (Google Drive → lib/cpu or lib/gpu). Empty dirs on GitHub.
+# Runtime (Releases → lib/cpu or lib/gpu). Empty dirs on GitHub.
 lib/cpu/*
 !lib/cpu/.gitkeep
 lib/gpu/*
@@ -42,3 +42,12 @@ lib_drive.yaml
 .idea/
 .vscode/
 *.iml
+
+# Extra caches
+*.log
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
